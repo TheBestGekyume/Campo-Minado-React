@@ -1,4 +1,4 @@
-import type { Cell } from "../../../types/Cell";
+import type { Cell } from "../../../../types/Cell";
 
 export const revealEmptyCells = (board: Cell[][], row: number, col: number): Cell[][] => {
   const newBoard = board.map(r => r.map(cell => ({ ...cell })));

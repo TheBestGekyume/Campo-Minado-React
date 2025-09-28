@@ -1,5 +1,5 @@
-import type { Cell } from "../../../types/Cell";
-import { buildBoard } from "./buildBoard";
+import type { Cell } from "../../../../types/Cell";
+import { buildBoard } from "../buildBoard";
 import { revealEmptyCells } from "./revealEmptyCells";
 
 export const revealSquare = (
@@ -11,8 +11,7 @@ export const revealSquare = (
   mines: number
 ): Cell[][] => {
 
-  //primeiro click
-  if (!board)  { 
+  if (!board) {
     const newBoard = buildBoard(rows, cols, mines, { safeRow: row, safeCol: col });
     return revealEmptyCells(newBoard, row, col);
   }
