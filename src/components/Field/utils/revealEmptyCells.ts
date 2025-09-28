@@ -5,7 +5,7 @@ export const revealEmptyCells = (board: Cell[][], row: number, col: number): Cel
   const rows = newBoard.length;
   const cols = newBoard[0].length;
 
-  const directions = [
+  const cellsAround = [
     [-1, -1], [-1, 0], [-1, 1],
     [0, -1], [0, 1],
     [1, -1], [1, 0], [1, 1],
@@ -17,12 +17,14 @@ export const revealEmptyCells = (board: Cell[][], row: number, col: number): Cel
 
     cell.isRevealed = true;
 
-    if (cell.minesAround > 0) return;
+    if (cell.minesAround > 0 || cell.isMine) return;
 
-    directions.forEach(([dr, dc]) => {
-      const nr = r + dr;
-      const nc = c + dc;
-      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) floodFill(nr, nc);
+    cellsAround.forEach(([offsetRow, offsetColumn]) => {
+      const neighboringRow = r + offsetRow;
+      const neighboringCol = c + offsetColumn;
+      if ((neighboringRow >= 0 && neighboringRow < rows) &&
+        (neighboringCol >= 0 && neighboringCol < cols)
+      ) floodFill(neighboringRow, neighboringCol);
     });
   };
 

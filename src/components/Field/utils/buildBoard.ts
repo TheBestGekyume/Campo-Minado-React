@@ -1,8 +1,5 @@
 import type { Cell } from "../../../types/Cell";
 
-/* Cria um tabuleiro de Cell[][] com minas distribuídas aleatoriamente
-e calcula o número de minas vizinhas para cada célula.*/
-
 export const buildBoard = (
   rows: number,
   cols: number,
@@ -18,19 +15,17 @@ export const buildBoard = (
     }))
   );
 
-  // Lista de offsets para a célula + vizinhas
-  const cellsAround = [
+  const gameStartCells = [
     [-1, -1], [-1, 0], [-1, 1],
-    [0, -1], [0, 0], [0, 1], // inclui a própria célula
+    [0, -1], [0, 0], [0, 1],
     [1, -1], [1, 0], [1, 1],
   ];
 
-  // Conjunto de coordenadas proibidas (safeCell + vizinhos)
-  const safeArea = new Set(
-    cellsAround
-      .map(([dr, dc]) => {
-        const r = safeCell.safeRow + dr;
-        const c = safeCell.safeCol + dc;
+  const gameStartArea = new Set(
+    gameStartCells
+      .map(([offsetRow, offsetColumn]) => {
+        const r = safeCell.safeRow + offsetRow;
+        const c = safeCell.safeCol + offsetColumn;
         return r >= 0 && r < rows && c >= 0 && c < cols ? `${r},${c}` : null;
       })
       .filter(Boolean) as string[]
@@ -43,7 +38,7 @@ export const buildBoard = (
       const col = Math.floor(Math.random() * cols);
       const key = `${row},${col}`;
 
-      if (!board[row][col].isMine && !safeArea.has(key)) {
+      if (!board[row][col].isMine && !gameStartArea.has(key)) {
         board[row][col].isMine = true;
         placedMines++;
       }
@@ -51,7 +46,7 @@ export const buildBoard = (
   };
 
   const calculateMinesAround = () => {
-    const neighbors = [
+    const cellsAround = [
       [-1, -1], [-1, 0], [-1, 1],
       [0, -1], [0, 1],
       [1, -1], [1, 0], [1, 1],
@@ -63,11 +58,14 @@ export const buildBoard = (
         if (currentCell.isMine) continue;
 
         let minesAround = 0;
-        for (const [dr, dc] of neighbors) {
-          const nr = row + dr;
-          const nc = col + dc;
-          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-            if (board[nr][nc].isMine) minesAround++;
+        for (const [colAround, rowAround] of cellsAround) {
+          const neighboringRow = row + colAround;
+          const neighboringColumn = col + rowAround;
+          if (
+            (neighboringRow >= 0 && neighboringRow < rows) &&
+            (neighboringColumn >= 0 && neighboringColumn < cols)
+          ) {
+            if (board[neighboringRow][neighboringColumn].isMine) minesAround++;
           }
         }
         currentCell.minesAround = minesAround;

@@ -1,6 +1,6 @@
 import type { Cell } from "../../../types/Cell";
 
-export const flagSquare = (board: Cell[][] | null, row: number, col: number): Cell[][] | null => {
+export const toggleFlag = (board: Cell[][] | null, row: number, col: number): Cell[][] | null => {
   if (!board) return null;
 
   const newBoard = board.map((r) => r.map((cell) => ({ ...cell })));

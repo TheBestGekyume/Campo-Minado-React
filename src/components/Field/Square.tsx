@@ -19,7 +19,7 @@ const Square: React.FC<SquareProps> = ({ data, onClick, onRightClick }) => {
     }
     const squareStyle = () => {
         if (!data.isRevealed) return "bg-slate-700";  
-        if (data.isMine) return "bg-rose-700";
+        if (data.isMine) return "bg-white";
 
         switch (data.minesAround) {
             case 0:

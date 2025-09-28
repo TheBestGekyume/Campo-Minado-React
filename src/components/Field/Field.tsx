@@ -1,32 +1,42 @@
 import { useState } from "react";
 import Square from "./Square";
 import type { Cell } from "../../types/Cell";
-import { revealSquare as revealSquareAction } from "./utils/revealSquare";
-import { flagSquare as flagSquareAction } from "./utils/flagSquare";
+import { revealSquare } from "./utils/revealSquare";
+import { toggleFlag } from "./utils/toggleFlag";
 import { checkWin } from "./utils/checkWin";
+import { checkLose } from "./utils/checkLose";
+import { revealBoard } from "./utils/reavealBoard";
 
 const Field: React.FC<{ rows?: number; cols?: number; mines?: number }> = ({
-    rows = 16,
-    cols = 16,
-    mines = 40,
+    rows = 10,
+    cols = 10,
+    mines = 10,
 }) => {
     const [board, setBoard] = useState<Cell[][] | null>(null);
     const [gameStatus, setGameStatus] = useState<"playing" | "won" | "lost">(
         "playing"
     );
+    const flagsCount = board?.flat().filter((c) => c.isFlagged).length ?? 0;
+    const minesLeft = mines - flagsCount;
 
     const handleReveal = (row: number, col: number) => {
-        const newBoard = revealSquareAction(board, row, col, rows, cols, mines);
+        const newBoard = revealSquare(board, row, col, rows, cols, mines);
         setBoard(newBoard);
 
         if (checkWin(newBoard, mines)) {
             setGameStatus("won");
+            setBoard(revealBoard(newBoard));
+        }
+
+        if (checkLose(newBoard, row, col)) {
+            setGameStatus("lost");
+            setBoard(revealBoard(newBoard));
         }
     };
 
     const handleFlag = (row: number, col: number, e: React.MouseEvent) => {
         e.preventDefault();
-        const newBoard = flagSquareAction(board, row, col);
+        const newBoard = toggleFlag(board, row, col);
         if (newBoard) {
             setBoard(newBoard);
         }
@@ -42,11 +52,6 @@ const Field: React.FC<{ rows?: number; cols?: number; mines?: number }> = ({
                 isFlagged: false,
             }))
         );
-
-    const flagsCount =
-        board?.flat().filter((cell) => cell.isFlagged).length ?? 0;
-
-    const minesLeft = mines - flagsCount;
 
     return (
         <div className="flex flex-col rounded-sm bg-slate-700 border-10 border-gray-600">

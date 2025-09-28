@@ -10,8 +10,9 @@ export const revealSquare = (
   cols: number,
   mines: number
 ): Cell[][] => {
-  
-  if (!board) {
+
+  //primeiro click
+  if (!board)  { 
     const newBoard = buildBoard(rows, cols, mines, { safeRow: row, safeCol: col });
     return revealEmptyCells(newBoard, row, col);
   }
