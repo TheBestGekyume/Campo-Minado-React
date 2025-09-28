@@ -13,16 +13,17 @@ const Square: React.FC<SquareProps> = ({ data, onClick, onRightClick }) => {
     if (data.isRevealed) {
         if (data.isMine) content = "💣";
         else if (data.minesAround > 0) content = data.minesAround.toString();
+        else content = "";
     } else if (data.isFlagged) {
         content = "🚩";
     }
     const squareStyle = () => {
-        if (!data.isRevealed) return "bg-neutral-500";
+        if (!data.isRevealed) return "bg-slate-700";  
         if (data.isMine) return "bg-rose-700";
 
         switch (data.minesAround) {
             case 0:
-                return "bg-slate-600";
+                return "bg-neutral-500 border-black";
             case 1:
                 return "bg-lime-500";
             case 2:
@@ -46,7 +47,8 @@ const Square: React.FC<SquareProps> = ({ data, onClick, onRightClick }) => {
         <div
             onClick={onClick}
             onContextMenu={onRightClick}
-            className={`w-8 h-8 border flex items-center justify-center cursor-pointer font-bold text-2xl
+            className={`w-6 h-6 border flex items-center border-transparent hover:border-white
+                justify-center cursor-pointer font-bold text-lg
         ${squareStyle()}`}
         >
             {content}

@@ -1,6 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color: #fff;
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    color: #fff;
+}
+
+@font-face {
+    font-family: "Digital7";
+    src: url("/src/assets/fonts/digital-7.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.counter-font {
+    font-family: "Digital7", monospace;
+    padding-inline: 6px;
+    font-size: 2rem;
+    color: red;
+    background: black;
 }

@@ -1,13 +1,13 @@
-import type { Cell } from "../../types/Cell";
+import type { Cell } from "../../../types/Cell";
 
-export const revealEmptyCells = (board: Cell[][], row: number, col: number) => {
+export const revealEmptyCells = (board: Cell[][], row: number, col: number): Cell[][] => {
   const newBoard = board.map(r => r.map(cell => ({ ...cell })));
   const rows = newBoard.length;
   const cols = newBoard[0].length;
 
   const directions = [
     [-1, -1], [-1, 0], [-1, 1],
-    [0, -1],          [0, 1],
+    [0, -1], [0, 1],
     [1, -1], [1, 0], [1, 1],
   ];
 
@@ -17,16 +17,12 @@ export const revealEmptyCells = (board: Cell[][], row: number, col: number) => {
 
     cell.isRevealed = true;
 
-    // se tiver minas ao redor, para por aqui
     if (cell.minesAround > 0) return;
 
-    // se não tiver minas ao redor, revela os vizinhos
     directions.forEach(([dr, dc]) => {
       const nr = r + dr;
       const nc = c + dc;
-      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-        floodFill(nr, nc);
-      }
+      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) floodFill(nr, nc);
     });
   };
 

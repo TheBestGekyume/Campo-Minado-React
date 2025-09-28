@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import Square from "../Square/Square";
+import { useState } from "react";
+import Square from "./Square";
 import type { Cell } from "../../types/Cell";
-import { buildBoard } from "./buildBoard";
-import { revealEmptyCells } from "./revealEmptyCells";
+import { revealSquare as revealSquareAction } from "./utils/revealSquare";
+import { flagSquare as flagSquareAction } from "./utils/flagSquare";
+import { checkWin } from "./utils/checkWin";
 
 const Field: React.FC<{ rows?: number; cols?: number; mines?: number }> = ({
     rows = 16,
@@ -10,75 +11,71 @@ const Field: React.FC<{ rows?: number; cols?: number; mines?: number }> = ({
     mines = 40,
 }) => {
     const [board, setBoard] = useState<Cell[][] | null>(null);
+    const [gameStatus, setGameStatus] = useState<"playing" | "won" | "lost">(
+        "playing"
+    );
 
-    const revealSquare = (row: number, col: number) => {
-        if (!board) {
-            const newBoard = buildBoard(rows, cols, mines, {
-                safeRow: row,
-                safeCol: col,
-            });
-            const revealedBoard = revealEmptyCells(newBoard, row, col);
-            setBoard(revealedBoard);
-            return;
+    const handleReveal = (row: number, col: number) => {
+        const newBoard = revealSquareAction(board, row, col, rows, cols, mines);
+        setBoard(newBoard);
+
+        if (checkWin(newBoard, mines)) {
+            setGameStatus("won");
         }
-
-        if (board[row][col].isRevealed) return;
-
-        const newBoard = revealEmptyCells(board, row, col);
-        setBoard(newBoard);
     };
 
-    const flagSquare = (row: number, col: number, e: React.MouseEvent) => {
+    const handleFlag = (row: number, col: number, e: React.MouseEvent) => {
         e.preventDefault();
-        if (!board) return;
-        const newBoard = board.map((r) => r.map((cell) => ({ ...cell })));
-        const cell = newBoard[row][col];
-        if (cell.isRevealed) return;
-
-        cell.isFlagged = !cell.isFlagged;
-        setBoard(newBoard);
+        const newBoard = flagSquareAction(board, row, col);
+        if (newBoard) {
+            setBoard(newBoard);
+        }
     };
 
-    if (!board) {
-        return (
-            <div
-                className="grid justify-center"
-                style={{ gridTemplateColumns: `repeat(${cols}, 32px)` }}
-            >
-                {Array.from({ length: rows }).map((_, rIndex) =>
-                    Array.from({ length: cols }).map((_, cIndex) => (
-                        <Square
-                            key={`${rIndex}-${cIndex}`}
-                            data={{
-                                isMine: false,
-                                minesAround: 0,
-                                isRevealed: false,
-                                isFlagged: false,
-                            }}
-                            onClick={() => revealSquare(rIndex, cIndex)}
-                            onRightClick={(e) => flagSquare(rIndex, cIndex, e)}
-                        />
-                    ))
-                )}
-            </div>
+    const displayBoard =
+        board ||
+        Array.from({ length: rows }, () =>
+            Array.from({ length: cols }, () => ({
+                isMine: false,
+                minesAround: 0,
+                isRevealed: false,
+                isFlagged: false,
+            }))
         );
-    }
+
+    const flagsCount =
+        board?.flat().filter((cell) => cell.isFlagged).length ?? 0;
+
+    const minesLeft = mines - flagsCount;
 
     return (
-        <div
-            className="grid justify-center"
-            style={{ gridTemplateColumns: `repeat(${cols}, 32px)` }}
-        >
-            {board.map((row, rIndex) =>
-                row.map((cell, cIndex) => (
-                    <Square
-                        key={`${rIndex}-${cIndex}`}
-                        data={cell}
-                        onClick={() => revealSquare(rIndex, cIndex)}
-                        onRightClick={(e) => flagSquare(rIndex, cIndex, e)}
-                    />
-                ))
-            )}
+        <div className="flex flex-col rounded-sm bg-slate-700 border-10 border-gray-600">
+            <div className="flex">
+                <h1 className="bg-black text-red-600 mx-auto px-1 my-2 counter-font">
+                    {minesLeft.toString().padStart(3, "0")}
+                </h1>
+                <h1>{gameStatus}</h1>
+            </div>
+
+            <div className="border-t-10 border-gray-600">
+                <div
+                    className="grid justify-center rounded-sm border-gray-600"
+                    style={{ gridTemplateColumns: `repeat(${cols}, 24px)` }}
+                >
+                    {displayBoard.map((row, rIndex) =>
+                        row.map((cell, cIndex) => (
+                            <Square
+                                key={`${rIndex}-${cIndex}`}
+                                data={cell}
+                                onClick={() => handleReveal(rIndex, cIndex)}
+                                onRightClick={(e) =>
+                                    handleFlag(rIndex, cIndex, e)
+                                }
+                            />
+                        ))
+                    )}
+                </div>
+            </div>
         </div>
     );
 };
