@@ -1,4 +1,4 @@
-import type { TCell } from "../../../../types/Cell";
+import type { TCell } from "../../../types/Cell";
 
 const checkLose = (board: TCell[][], row: number, col: number): boolean => board[row][col].isMine;
 

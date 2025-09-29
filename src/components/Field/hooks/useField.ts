@@ -5,7 +5,7 @@ import { toggleFlag } from "../utils/toggleFlag";
 // import { checkWin } from "../utils/games/checkWin";
 // import { checkLose } from "../utils/games/checkLose";
 import { revealBoard } from "../utils/reveals/revealBoard";
-import { checkGameStatus } from "../utils/games/checkGameStatus";
+import { checkGameStatus } from "../utils/checkGameStatus";
 
 export const useField = (rows = 16, cols = 16, mines = 40) => {
     const [board, setBoard] = useState<TCell[][] | null>(null);
@@ -20,11 +20,11 @@ export const useField = (rows = 16, cols = 16, mines = 40) => {
 
         const gameStatus = checkGameStatus(newBoard, row, col, mines);
 
-        if(gameStatus !== 'playing'){
+        if (gameStatus !== 'playing') {
             setGameStatus(gameStatus)
             setBoard(revealBoard(newBoard));
         }
-        
+
         // if (checkWin(newBoard, mines)) {
         //     setGameStatus("won");
         //     setBoard(revealBoard(newBoard));
