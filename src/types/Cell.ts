@@ -1,4 +1,4 @@
-export type Cell = {
+export type TCell = {
   isMine: boolean;
   minesAround: number;
   isRevealed: boolean;

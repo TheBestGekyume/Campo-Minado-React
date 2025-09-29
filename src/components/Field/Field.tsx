@@ -1,4 +1,4 @@
-import { Square } from "./Square";
+import { Cell } from "./Cell";
 import { useField } from "./hooks/useField";
 
 export const Field: React.FC<{ rows?: number; cols?: number; mines?: number }> = ({ rows = 10, cols = 10, mines = 10 }) => {
@@ -20,7 +20,7 @@ export const Field: React.FC<{ rows?: number; cols?: number; mines?: number }> =
                 >
                     {board.map((row, rIndex) =>
                         row.map((cell, cIndex) => (
-                            <Square
+                            <Cell
                                 key={`${rIndex}-${cIndex}`}
                                 data={cell}
                                 onClick={() => handleReveal(rIndex, cIndex)}

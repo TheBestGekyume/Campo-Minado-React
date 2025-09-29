@@ -1,15 +1,15 @@
-import type { Cell } from "../../../../types/Cell";
+import type { TCell } from "../../../../types/Cell";
 import { buildBoard } from "../buildBoard";
 import { revealEmptyCells } from "./revealEmptyCells";
 
 export const revealSquare = (
-  board: Cell[][] | null,
+  board: TCell[][] | null,
   row: number,
   col: number,
   rows: number,
   cols: number,
   mines: number
-): Cell[][] => {
+): TCell[][] => {
 
   if (!board) {
     const newBoard = buildBoard(rows, cols, mines, { safeRow: row, safeCol: col });

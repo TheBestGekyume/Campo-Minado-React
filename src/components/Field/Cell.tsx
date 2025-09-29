@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import type { Cell } from "../../types/Cell";
+import type { TCell } from "../../types/Cell";
 
 interface SquareProps {
-    data: Cell; // isMine: boolean; minesAround: number; isRevealed: boolean
+    data: TCell; // isMine: boolean; minesAround: number; isRevealed: boolean
     onClick: () => void;
     onRightClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-export const Square: React.FC<SquareProps> = ({
+export const Cell: React.FC<SquareProps> = ({
     data,
     onClick,
     onRightClick,

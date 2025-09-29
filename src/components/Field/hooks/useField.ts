@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import type { Cell } from "../../../types/Cell";
+import type { TCell } from "../../../types/Cell";
 import { revealSquare } from "../utils/reveals/revealSquare";
 import { toggleFlag } from "../utils/toggleFlag";
 import { checkWin } from "../utils/games/checkWin";
@@ -7,7 +7,7 @@ import { checkLose } from "../utils/games/checkLose";
 import { revealBoard } from "../utils/reveals/revealBoard";
 
 export const useField = (rows = 10, cols = 10, mines = 10) => {
-    const [board, setBoard] = useState<Cell[][] | null>(null);
+    const [board, setBoard] = useState<TCell[][] | null>(null);
     const [gameStatus, setGameStatus] = useState<"playing" | "won" | "lost">("playing");
 
     const flagsCount = board?.flat().filter((c) => c.isFlagged).length ?? 0;
