@@ -1,5 +1,5 @@
-import type { TCell } from "../../../../types/Cell";
-import { buildBoard } from "../buildBoard";
+import type { TCell } from "../types/Cell";
+import { buildBoard } from "./buildBoard";
 import { revealEmptyCells } from "./revealEmptyCells";
 
 export const revealCell = (

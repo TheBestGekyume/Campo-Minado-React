@@ -1,4 +1,4 @@
-import type { TCell } from "../../../types/Cell";
+import type { TCell } from "../types/Cell";
 
 export const buildBoard = (
   rows: number,

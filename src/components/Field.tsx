@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Cell } from "./Cell";
-import { useField } from "./hooks/useField";
+import { useField } from "../hooks/useField";
 
 export const Field: React.FC<{
     rows?: number;

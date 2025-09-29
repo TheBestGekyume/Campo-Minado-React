@@ -1,4 +1,4 @@
-import {Field} from "./components/Field/Field";
+import { Field } from "./components/Field";
 
 function App() {
     return (
