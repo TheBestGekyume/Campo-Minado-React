@@ -6,7 +6,7 @@ export const Field: React.FC<{
     rows?: number;
     cols?: number;
     mines?: number;
-}> = ({ rows = 16, cols = 16, mines = 40 }) => {
+}> = ({ rows = 9, cols = 9, mines = 10 }) => {
     const { board, gameStatus, minesLeft, handleReveal, handleFlag } = useField(
         rows,
         cols,
