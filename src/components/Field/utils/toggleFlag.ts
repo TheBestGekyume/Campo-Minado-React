@@ -1,6 +1,6 @@
-import type { Cell } from "../../../types/Cell";
+import type { TCell } from "../../../types/Cell";
 
-export const toggleFlag = (board: Cell[][] | null, row: number, col: number): Cell[][] | null => {
+export const toggleFlag = (board: TCell[][] | null, row: number, col: number): TCell[][] | null => {
   if (!board) return null;
 
   let cell = board[row][col];

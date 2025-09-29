@@ -2,24 +2,30 @@ import { useEffect, useState } from "react";
 import type { TCell } from "../../types/Cell";
 
 interface CellProps {
-    data: TCell; // isMine: boolean; minesAround: number; isRevealed: boolean
+    data: TCell;
     onClick: () => void;
     onRightClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+    rIndex: number;
+    cIndex: number;
+    lastClicked: { row: number; col: number } | null;
 }
 
 export const Cell: React.FC<CellProps> = ({
     data,
     onClick,
     onRightClick,
+    rIndex,
+    cIndex,
+    lastClicked,
 }) => {
     let content = "";
     const [isRevealing, setIsRevealing] = useState(false);
 
     useEffect(() => {
-        if (data.isRevealed && !isRevealing) {
+        if (data.isRevealed) {
             setIsRevealing(true);
         }
-    }, [data.isRevealed, isRevealing]);
+    }, [data.isRevealed]);
 
     if (data.isRevealed) {
         if (data.isMine) content = "💣";
@@ -32,42 +38,43 @@ export const Cell: React.FC<CellProps> = ({
     const handleClick = () => {
         if (!data.isRevealed && !data.isFlagged) {
             setIsRevealing(true);
-            // Pequeno delay para a animação completar antes da lógica
-            setTimeout(() => {
-                onClick();
-            }, 150);
-        } else {
-            onClick();
         }
+        onClick();
     };
+
+    const distance =
+        lastClicked != null
+            ? Math.abs(rIndex - lastClicked.row) +
+              Math.abs(cIndex - lastClicked.col)
+            : 0;
+
+    const delayMs = data.isRevealed ? distance * 50 : 0;
 
     const cellStyle = () => {
         if (!data.isRevealed) return "bg-slate-700";
-        if (data.isMine) return "bg-white";
-
-        const transitionClass = isRevealing
-            ? "transition-all duration-300 ease-out transform scale-105"
-            : "";
+        if (data.isMine) return "bg-red-600";
 
         switch (data.minesAround) {
             case 0:
-                return `bg-neutral-500 border-black ${transitionClass}`;
+                return "bg-neutral-500 border-black";
             case 1:
-                return `bg-lime-500 ${transitionClass}`;
+                return "bg-lime-500";
             case 2:
-                return `bg-yellow-400 ${transitionClass}`;
+                return "bg-lime-700";
             case 3:
-                return `bg-amber-600 ${transitionClass}`;
+                return "bg-yellow-500";
             case 4:
-                return `bg-orange-700 ${transitionClass}`;
+                return "bg-orange-500";
             case 5:
-                return `bg-red-800 ${transitionClass}`;
+                return "bg-red-800";
             case 6:
-                return `bg-purple-800 ${transitionClass}`;
+                return "bg-purple-800";
             case 7:
-                return `bg-purple-950 ${transitionClass}`;
+                return "bg-purple-950";
             case 8:
-                return `bg-stone-950 ${transitionClass}`;
+                return "bg-stone-950";
+            default:
+                return "";
         }
     };
 
@@ -75,12 +82,16 @@ export const Cell: React.FC<CellProps> = ({
         <div
             onClick={data.isRevealed ? undefined : handleClick}
             onContextMenu={data.isRevealed ? undefined : onRightClick}
-            className={`w-6 h-6 border flex items-center border-transparent justify-center font-bold text-lg 
+            style={{ transitionDelay: `${delayMs}ms` }}
+            className={`w-6 h-6 border-1 flex items-center border-transparent justify-center font-bold text-lg 
                 ${
                     data.isRevealed
-                        ? null
-                        : "hover:border-white cursor-pointer"
+                        ? ""
+                        : "hover:border-white cursor-pointer z-1"
                 } 
+                transition-all duration-300 ease-out transform ${
+                    isRevealing ? "scale-105" : ""
+                }
         ${cellStyle()}`}
         >
             {content}

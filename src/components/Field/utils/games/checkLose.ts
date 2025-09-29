@@ -1,3 +1,3 @@
-import type { Cell } from "../../../types/Cell";
+import type { TCell } from "../../../../types/Cell";
 
-export const checkLose = (board: Cell[][], row:number, col:number): boolean =>board[row][col].isMine;
+export const checkLose = (board: TCell[][], row:number, col:number): boolean =>board[row][col].isMine;

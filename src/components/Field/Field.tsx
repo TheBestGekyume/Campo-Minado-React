@@ -1,8 +1,26 @@
+import { useState } from "react";
 import { Cell } from "./Cell";
 import { useField } from "./hooks/useField";
 
-export const Field: React.FC<{ rows?: number; cols?: number; mines?: number }> = ({ rows = 10, cols = 10, mines = 10 }) => {
-    const { board, gameStatus, minesLeft, handleReveal, handleFlag } = useField(rows, cols, mines);
+export const Field: React.FC<{
+    rows?: number;
+    cols?: number;
+    mines?: number;
+}> = ({ rows = 16, cols = 16, mines = 40 }) => {
+    const { board, gameStatus, minesLeft, handleReveal, handleFlag } = useField(
+        rows,
+        cols,
+        mines
+    );
+    const [lastClicked, setLastClicked] = useState<{
+        row: number;
+        col: number;
+    } | null>(null);
+
+    const handleCellClick = (r: number, c: number) => {
+        setLastClicked({ row: r, col: c });
+        handleReveal(r, c);
+    };
 
     return (
         <div className="flex flex-col rounded-sm bg-slate-700 border-10 border-gray-600">
@@ -23,8 +41,13 @@ export const Field: React.FC<{ rows?: number; cols?: number; mines?: number }> =
                             <Cell
                                 key={`${rIndex}-${cIndex}`}
                                 data={cell}
-                                onClick={() => handleReveal(rIndex, cIndex)}
-                                onRightClick={(e) => handleFlag(rIndex, cIndex, e)}
+                                rIndex={rIndex}
+                                cIndex={cIndex}
+                                lastClicked={lastClicked}
+                                onClick={() => handleCellClick(rIndex, cIndex)}
+                                onRightClick={(e) =>
+                                    handleFlag(rIndex, cIndex, e)
+                                }
                             />
                         ))
                     )}

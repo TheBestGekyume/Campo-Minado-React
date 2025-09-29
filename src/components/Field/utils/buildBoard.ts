@@ -1,12 +1,12 @@
-import type { Cell } from "../../../types/Cell";
+import type { TCell } from "../../../types/Cell";
 
 export const buildBoard = (
   rows: number,
   cols: number,
   minesQuant: number,
   safeCell: { safeRow: number; safeCol: number }
-): Cell[][] => {
-  const board: Cell[][] = Array.from({ length: rows }, () =>
+): TCell[][] => {
+  const board: TCell[][] = Array.from({ length: rows }, () =>
     Array.from({ length: cols }, () => ({
       isMine: false,
       minesAround: 0,

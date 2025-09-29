@@ -1,6 +1,6 @@
-import type { Cell } from "../../../../types/Cell";
+import type { TCell } from "../../../../types/Cell";
 
-export const revealEmptyCells = (board: Cell[][], row: number, col: number): Cell[][] => {
+export const revealEmptyCells = (board: TCell[][], row: number, col: number): TCell[][] => {
   const newBoard = board.map(r => r.map(cell => ({ ...cell })));
   const rows = newBoard.length;
   const cols = newBoard[0].length;

@@ -6,7 +6,7 @@ import { checkWin } from "../utils/games/checkWin";
 import { checkLose } from "../utils/games/checkLose";
 import { revealBoard } from "../utils/reveals/revealBoard";
 
-export const useField = (rows = 10, cols = 10, mines = 10) => {
+export const useField = (rows = 16, cols = 16, mines = 40) => {
     const [board, setBoard] = useState<TCell[][] | null>(null);
     const [gameStatus, setGameStatus] = useState<"playing" | "won" | "lost">("playing");
 
