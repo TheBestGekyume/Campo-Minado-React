@@ -1,21 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Cell } from "./Cell";
 import { useField } from "../hooks/useField";
 
 export const Field: React.FC<{
-    rows?: number;
-    cols?: number;
-    mines?: number;
-}> = ({ rows = 9, cols = 9, mines = 10 }) => {
+    rows: number;
+    cols: number;
+    mines: number;
+    onStatusChange?: (status: "playing" | "won" | "lost") => void;
+}> = ({ rows, cols, mines, onStatusChange }) => {
     const { board, gameStatus, minesLeft, handleReveal, handleFlag } = useField(
         rows,
         cols,
         mines
     );
+
     const [lastClicked, setLastClicked] = useState<{
         row: number;
         col: number;
     } | null>(null);
+
+    useEffect(() => {
+        onStatusChange?.(gameStatus);
+    }, [gameStatus, onStatusChange]);
 
     const handleCellClick = (r: number, c: number) => {
         setLastClicked({ row: r, col: c });
@@ -28,7 +34,6 @@ export const Field: React.FC<{
                 <h1 className="bg-black text-red-600 mx-auto px-1 my-2 counter-font">
                     {minesLeft.toString().padStart(3, "0")}
                 </h1>
-                <h1>{gameStatus}</h1>
             </div>
 
             <div className="border-t-10 border-gray-600">
