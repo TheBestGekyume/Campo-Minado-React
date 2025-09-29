@@ -68,7 +68,7 @@ export const Field: React.FC<{
                     <FaBomb className="w-6 h-auto fill-neutral-300" />
                 </div>
 
-                <div className="flex  bg-black gap-1 counter-font">
+                <div className="flex bg-black gap-1 counter-font">
                     <span>{formatTime(seconds)}</span>
                     <MdTimer className="w-6 h-auto fill-neutral-300" />
                 </div>
