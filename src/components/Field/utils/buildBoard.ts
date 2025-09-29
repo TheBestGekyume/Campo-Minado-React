@@ -59,8 +59,8 @@ export const buildBoard = (
 
         let minesAround = 0;
         for (const [rowAround, colAround] of cellsAround) {
-          const neighboringRow = row + colAround;
-          const neighboringColumn = col + rowAround;
+          const neighboringRow = row + rowAround;
+          const neighboringColumn = col + colAround;
           if (
             (neighboringRow >= 0 && neighboringRow < rows) &&
             (neighboringColumn >= 0 && neighboringColumn < cols)
