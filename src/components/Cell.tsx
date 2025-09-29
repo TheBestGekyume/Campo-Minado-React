@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { TCell } from "../../types/Cell";
+import type { TCell } from "../types/Cell";
 
 interface CellProps {
     data: TCell;

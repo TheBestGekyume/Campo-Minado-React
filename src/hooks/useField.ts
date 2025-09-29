@@ -1,10 +1,11 @@
 import { useState, useMemo } from "react";
-import type { TCell } from "../../../types/Cell";
-import { revealCell } from "../utils/reveals/revealCell";
-import { toggleFlag } from "../utils/toggleFlag";
-import { checkWin } from "../utils/games/checkWin";
-import { checkLose } from "../utils/games/checkLose";
-import { revealBoard } from "../utils/reveals/revealBoard";
+import type { TCell } from "../types/Cell";
+import { revealCell } from "../logic/revealCell";
+import { toggleFlag } from "../logic/toggleFlag";
+// import { checkWin } from "../utils/games/checkWin";
+// import { checkLose } from "../utils/games/checkLose";
+import { revealBoard } from "../logic/revealBoard";
+import { checkGameStatus } from "../logic/checkGameStatus";
 
 export const useField = (rows = 16, cols = 16, mines = 40) => {
     const [board, setBoard] = useState<TCell[][] | null>(null);
@@ -17,13 +18,10 @@ export const useField = (rows = 16, cols = 16, mines = 40) => {
         const newBoard = revealCell(board, row, col, rows, cols, mines);
         setBoard(newBoard);
 
-        if (checkWin(newBoard, mines)) {
-            setGameStatus("won");
-            setBoard(revealBoard(newBoard));
-        }
+        const gameStatus = checkGameStatus(newBoard, row, col, mines);
 
-        if (checkLose(newBoard, row, col)) {
-            setGameStatus("lost");
+        if (gameStatus !== 'playing') {
+            setGameStatus(gameStatus)
             setBoard(revealBoard(newBoard));
         }
     };
