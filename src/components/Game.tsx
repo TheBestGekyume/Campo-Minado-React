@@ -58,13 +58,39 @@ function Game() {
             />
 
             {gameStatus !== "playing" && (
-                <div className="flex flex-col items-center gap-2">
-                    <p>
-                        {gameStatus === "won"
-                            ? "Você venceu! 🎉"
-                            : "Game Over 💥"}
-                    </p>
-                    <button onClick={handleRetry}>Jogar novamente</button>
+                <div className="fixed inset-0 flex items-center justify-center z-10">
+                    <div
+                        className={`bg-neutral-900 border-2  
+                    rounded-lg p-8 max-w-sm w-75 mx-4 shadow-2xl
+                     transform transition-all
+                     ${
+                         gameStatus === "won"
+                             ? "border-green-600"
+                             : "border-red-600"
+                     }
+                     `}
+                    >
+                        <div className="flex flex-col items-center gap-6 text-center">
+                            <p
+                                className={`text-2xl font-bold ${
+                                    gameStatus === "won"
+                                        ? "text-green-600"
+                                        : "text-red-600"
+                                }`}
+                            >
+                                {gameStatus === "won"
+                                    ? "Você venceu! 🎉"
+                                    : "Game Over 💥"}
+                            </p>
+                            <button
+                                onClick={handleRetry}
+                                className="bg-zinc-800 hover:bg-zinc-950 text-white 
+                                font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                            >
+                                Jogar novamente
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
