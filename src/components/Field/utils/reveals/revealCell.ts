@@ -2,7 +2,7 @@ import type { TCell } from "../../../../types/Cell";
 import { buildBoard } from "../buildBoard";
 import { revealEmptyCells } from "./revealEmptyCells";
 
-export const revealSquare = (
+export const revealCell = (
   board: TCell[][] | null,
   row: number,
   col: number,

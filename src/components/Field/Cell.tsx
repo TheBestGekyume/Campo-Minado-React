@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import type { TCell } from "../../types/Cell";
 
-interface SquareProps {
+interface CellProps {
     data: TCell; // isMine: boolean; minesAround: number; isRevealed: boolean
     onClick: () => void;
     onRightClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-export const Cell: React.FC<SquareProps> = ({
+export const Cell: React.FC<CellProps> = ({
     data,
     onClick,
     onRightClick,
@@ -41,7 +41,7 @@ export const Cell: React.FC<SquareProps> = ({
         }
     };
 
-    const squareStyle = () => {
+    const cellStyle = () => {
         if (!data.isRevealed) return "bg-slate-700";
         if (data.isMine) return "bg-white";
 
@@ -81,7 +81,7 @@ export const Cell: React.FC<SquareProps> = ({
                         ? null
                         : "hover:border-white cursor-pointer"
                 } 
-        ${squareStyle()}`}
+        ${cellStyle()}`}
         >
             {content}
         </div>

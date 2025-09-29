@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import type { TCell } from "../../../types/Cell";
-import { revealSquare } from "../utils/reveals/revealSquare";
+import { revealCell } from "../utils/reveals/revealCell";
 import { toggleFlag } from "../utils/toggleFlag";
 import { checkWin } from "../utils/games/checkWin";
 import { checkLose } from "../utils/games/checkLose";
@@ -14,7 +14,7 @@ export const useField = (rows = 10, cols = 10, mines = 10) => {
     const minesLeft = ["won", "lost"].includes(gameStatus) ? 0 : mines - flagsCount;
 
     const handleReveal = (row: number, col: number) => {
-        const newBoard = revealSquare(board, row, col, rows, cols, mines);
+        const newBoard = revealCell(board, row, col, rows, cols, mines);
         setBoard(newBoard);
 
         if (checkWin(newBoard, mines)) {
